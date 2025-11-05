@@ -8,8 +8,6 @@ from typing import Optional
 
 import click
 
-from inquire.exceptions import BamlError
-
 
 @click.group()
 def cli():
@@ -101,7 +99,7 @@ async def _init_async(source_dir: Optional[Path]):
         click.echo(f"   ✅ Copied {baml_file.name}")
 
     # Run baml-cli generate
-    click.echo(f"\n🔨 Generating Python types...")
+    click.echo("\n🔨 Generating Python types...")
     try:
         process = await asyncio.create_subprocess_exec(
             "baml-cli",
@@ -128,14 +126,14 @@ async def _init_async(source_dir: Optional[Path]):
     click.echo("  1. Import types: from baml_client.types import YourType")
     click.echo("  2. Import functions: from baml_client import b")
     click.echo("  3. Use inquire: await research(..., baml_function=b.YourFunction)")
-    click.echo(f"\nProject structure:")
+    click.echo("\nProject structure:")
     click.echo(f"  {baml_dir}/")
-    click.echo(f"    ├── baml_src/")
+    click.echo("    ├── baml_src/")
     for f in baml_files:
         click.echo(f"    │   ├── {f.name}")
-    click.echo(f"    │   ├── clients.baml      # LLM configurations")
-    click.echo(f"    │   └── generators.baml   # Code generation settings")
-    click.echo(f"    └── baml_client/          # Generated Python types")
+    click.echo("    │   ├── clients.baml      # LLM configurations")
+    click.echo("    │   └── generators.baml   # Code generation settings")
+    click.echo("    └── baml_client/          # Generated Python types")
 
 
 def main():
