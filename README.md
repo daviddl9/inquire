@@ -293,6 +293,16 @@ See [.github/workflows/README.md](.github/workflows/README.md) for more details.
 4. Run tests: `make test`
 5. Submit a pull request
 
+## Credits
+
+This project builds on the excellent work of:
+
+- **[Open Deep Research](https://github.com/langchain-ai/open_deep_research)** - Deep research capabilities powered by LangGraph and LangChain. The research and synthesis implementation in `inquire` is inspired by their approach to automated research workflows.
+
+- **[BAML](https://github.com/BoundaryML/baml)** - Boundary ML's BAML framework provides the type-safe structured extraction layer. BAML's schema-first approach enables full type safety from definition to runtime.
+
+Special thanks to the maintainers and contributors of these projects for creating such powerful open source tools.
+
 ## License
 
 MIT
