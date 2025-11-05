@@ -2,7 +2,7 @@ class CompanyInfo {
   name string @description("Company's legal name")
   description string @description("What the company does")
   founders string[] @description("List of founder names")
-  funding string? @description("Total funding raised (optional)")
+  funding string | null @description("Total funding raised (optional)")
 }
 
 function ExtractCompanyInfo(research_output: string) -> CompanyInfo {

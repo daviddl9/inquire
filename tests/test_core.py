@@ -1,7 +1,6 @@
 """Tests for core researcher."""
 
 import pytest
-from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
 
 from inquire.core import Researcher, research
@@ -135,3 +134,4 @@ async def test_convenience_function(valid_config, tmp_path):
 
         mock_researcher_class.assert_called_once()
         mock_instance.research.assert_called_once()
+        assert result == "result"

@@ -1,7 +1,6 @@
 """End-to-end integration tests."""
 
 import pytest
-from pathlib import Path
 from unittest.mock import AsyncMock, patch
 
 from inquire import research, Researcher

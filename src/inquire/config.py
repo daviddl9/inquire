@@ -75,6 +75,6 @@ class ResearchConfig:
         errors = self.validate()
         if errors:
             raise ConfigurationError(
-                f"Configuration validation failed:\n"
+                "Configuration validation failed:\n"
                 + "\n".join(f"  - {e}" for e in errors)
             )

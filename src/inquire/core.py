@@ -5,8 +5,8 @@ from typing import Any
 
 from inquire.baml_manager import BamlManager
 from inquire.config import ResearchConfig
-from inquire.exceptions import ResearchError, ExtractionError
-from inquire.types import BamlFunction, ConfigDict
+from inquire.exceptions import ExtractionError
+from inquire.types import ConfigDict
 
 
 class Researcher:
