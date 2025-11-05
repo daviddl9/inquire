@@ -57,6 +57,8 @@ class BamlManager:
         process = await asyncio.create_subprocess_exec(
             "baml-cli",
             "generate",
+            "--client-type",
+            "python/pydantic",
             cwd=self.baml_dir,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,

@@ -24,7 +24,11 @@ dependencies = [
     "tavily-python>=0.5.0",
     "openai>=1.0.0",
     "httpx>=0.24.0",
+    "click>=8.0.0",
 ]
+
+[project.scripts]
+inquire = "inquire.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/daviddl9/inquire"

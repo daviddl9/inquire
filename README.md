@@ -33,7 +33,7 @@ Get API keys:
 
 ### 3. Create Your Schema
 
-Create `baml_schemas/baml_src/company.baml`:
+In your project directory, create `company.baml`:
 
 ```baml
 class CompanyInfo {
@@ -56,7 +56,26 @@ function ExtractCompanyInfo(research_output: string) -> CompanyInfo {
 }
 ```
 
-### 4. Write Your Python Code
+### 4. Initialize BAML Project
+
+Run the initialization command:
+
+```bash
+inquire init
+```
+
+This automatically:
+- ✅ Creates `baml_schemas/` directory structure
+- ✅ Runs `baml init` to set up the project
+- ✅ Copies your `.baml` files to `baml_schemas/baml_src/`
+- ✅ Generates Python types from your schemas
+
+You can also specify a custom directory:
+```bash
+inquire init --dir /path/to/schemas
+```
+
+### 5. Write Your Python Code
 
 Create `research_companies.py`:
 
@@ -67,7 +86,6 @@ from baml_client.types import CompanyInfo
 from baml_client import b
 
 async def main():
-    # inquire automatically initializes BAML and generates types
     result = await research(
         research_instructions="Research Stripe: founders, funding, and what they do",
         schema=CompanyInfo,
@@ -84,27 +102,26 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-### 5. Run It
+### 6. Run It
 
 ```bash
 python research_companies.py
 ```
 
-**What happens behind the scenes:**
-1. First run: `inquire` detects no BAML project and runs `baml init` automatically
-2. Then runs `baml-cli generate` to create Python types from your schemas
-3. Executes your research and extraction
-
-After the first run, the BAML project structure exists and subsequent runs just regenerate types if needed.
-
-**Project structure created:**
+**Project structure after `inquire init`:**
 ```
-baml_schemas/
-├── baml_src/
-│   ├── clients.baml       # Auto-generated LLM configs
-│   ├── generators.baml    # Auto-generated settings
-│   └── company.baml       # Your schema (you created this)
-└── baml_client/           # Generated Python types (don't edit)
+my_project/
+├── company.baml                    # Your original schema
+├── baml_schemas/
+│   ├── baml_src/
+│   │   ├── company.baml           # Copied here by inquire init
+│   │   ├── clients.baml           # Auto-generated LLM configs
+│   │   └── generators.baml        # Auto-generated settings
+│   └── baml_client/               # Generated Python types
+│       ├── __init__.py
+│       ├── types.py
+│       └── ...
+└── research_companies.py          # Your Python code
 ```
 
 ## How It Works
