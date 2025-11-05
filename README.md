@@ -7,8 +7,10 @@ Combine BAML's structured extraction with deep research capabilities.
 ## Installation
 
 ```bash
-pip install inquire
+pip install inquire-py
 ```
+
+Note: The package is installed as `inquire-py` but imported as `inquire`.
 
 ## Quick Start
 
