@@ -73,7 +73,32 @@ To enable publishing, add your PyPI token as a GitHub secret:
 
 ## Recommended Publishing Workflow
 
-**For controlled releases (recommended):**
+### Automated Release (Easiest) 🚀
+
+Use the release script:
+
+```bash
+# Using the script directly
+./scripts/release.sh 0.2.0
+
+# Or using make
+make release VERSION=0.2.0
+```
+
+This automatically:
+- ✅ Validates version format
+- ✅ Checks for uncommitted changes
+- ✅ Updates `pyproject.toml`
+- ✅ Shows diff and asks for confirmation
+- ✅ Creates commit and tag
+- ✅ Pushes to GitHub
+
+The GitHub Actions workflow then automatically publishes to PyPI.
+
+### Manual Release
+
+If you prefer manual control:
+
 ```bash
 # 1. Update version in pyproject.toml
 vim pyproject.toml  # Change version = "0.1.0" to "0.2.0"

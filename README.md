@@ -259,6 +259,40 @@ baml_schemas/baml_client/
 - OpenAI API key
 - Tavily API key
 
+## Development
+
+### Running Tests
+
+```bash
+make test
+```
+
+### Creating a Release
+
+```bash
+# Automated release (recommended)
+make release VERSION=0.2.0
+
+# Or use the script directly
+./scripts/release.sh 0.2.0
+```
+
+This will:
+1. Update version in `pyproject.toml`
+2. Create a git commit and tag
+3. Push to GitHub
+4. Trigger automated publishing to PyPI via GitHub Actions
+
+See [.github/workflows/README.md](.github/workflows/README.md) for more details.
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests: `make test`
+5. Submit a pull request
+
 ## License
 
 MIT
