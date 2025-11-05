@@ -5,7 +5,7 @@ description = "Intelligent inquiry with structured results - BAML + Deep Researc
 requires-python = ">=3.11"
 
 dependencies = [
-    "baml-py>=0.60.0",
+    "baml-py==0.205.0",
     "pydantic>=2.0",
 ]
 
