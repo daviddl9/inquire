@@ -98,6 +98,12 @@ async def _init_async(source_dir: Optional[Path]):
         shutil.copy2(baml_file, dest)
         click.echo(f"   ✅ Copied {baml_file.name}")
 
+    # Delete original .baml files to avoid duplication
+    click.echo("\n🧹 Cleaning up original .baml files...")
+    for baml_file in baml_files:
+        baml_file.unlink()
+        click.echo(f"   🗑️  Removed {baml_file.name}")
+
     # Run baml-cli generate
     click.echo("\n🔨 Generating Python types...")
     try:
@@ -134,6 +140,7 @@ async def _init_async(source_dir: Optional[Path]):
     click.echo("    │   ├── clients.baml      # LLM configurations")
     click.echo("    │   └── generators.baml   # Code generation settings")
     click.echo("    └── baml_client/          # Generated Python types")
+    click.echo("\nNote: Original .baml files have been moved to baml_schemas/baml_src/")
 
 
 def main():

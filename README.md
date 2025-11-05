@@ -67,8 +67,9 @@ inquire init
 This automatically:
 - ✅ Creates `baml_schemas/` directory structure
 - ✅ Runs `baml init` to set up the project
-- ✅ Copies your `.baml` files to `baml_schemas/baml_src/`
+- ✅ Moves your `.baml` files to `baml_schemas/baml_src/`
 - ✅ Generates Python types from your schemas
+- ✅ Cleans up original files to avoid duplication
 
 You can also specify a custom directory:
 ```bash
@@ -111,10 +112,9 @@ python research_companies.py
 **Project structure after `inquire init`:**
 ```
 my_project/
-├── company.baml                    # Your original schema
 ├── baml_schemas/
 │   ├── baml_src/
-│   │   ├── company.baml           # Copied here by inquire init
+│   │   ├── company.baml           # Your schema (moved here)
 │   │   ├── clients.baml           # Auto-generated LLM configs
 │   │   └── generators.baml        # Auto-generated settings
 │   └── baml_client/               # Generated Python types
@@ -123,6 +123,8 @@ my_project/
 │       └── ...
 └── research_companies.py          # Your Python code
 ```
+
+> **Note**: The original `.baml` files in your project root are automatically moved to `baml_schemas/baml_src/` to keep your project clean and avoid duplication.
 
 ## How It Works
 
