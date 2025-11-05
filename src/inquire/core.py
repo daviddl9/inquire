@@ -12,9 +12,7 @@ from inquire.types import ConfigDict
 class Researcher:
     """Main research orchestrator using BAML-generated types."""
 
-    def __init__(
-        self, baml_dir: Path | None = None, config: ConfigDict | None = None
-    ):
+    def __init__(self, baml_dir: Path | None = None, config: ConfigDict | None = None):
         """Initialize researcher.
 
         Args:
@@ -124,8 +122,11 @@ Please synthesize these findings into a cohesive research report that addresses 
             response = await openai_client.chat.completions.create(
                 model=self.config.research_model,
                 messages=[
-                    {"role": "system", "content": "You are a research assistant providing comprehensive, well-researched reports."},
-                    {"role": "user", "content": synthesis_prompt}
+                    {
+                        "role": "system",
+                        "content": "You are a research assistant providing comprehensive, well-researched reports.",
+                    },
+                    {"role": "user", "content": synthesis_prompt},
                 ],
                 temperature=0.1,
             )
