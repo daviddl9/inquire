@@ -2,8 +2,22 @@
 name = "inquire"
 version = "0.1.0"
 description = "Intelligent inquiry with structured results - BAML + Deep Research"
+readme = "README.md"
 requires-python = ">=3.11"
-
+license = { text = "MIT" }
+authors = [
+    { name = "David Livingston", email = "ddl.tdh@gmail.com" }
+]
+keywords = ["ai", "research", "baml", "structured-extraction", "llm"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 dependencies = [
     "baml-py==0.205.0",
     "pydantic>=2.0",
@@ -11,6 +25,11 @@ dependencies = [
     "openai>=1.0.0",
     "httpx>=0.24.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/daviddl9/inquire"
+Repository = "https://github.com/daviddl9/inquire"
+Issues = "https://github.com/daviddl9/inquire/issues"
 
 [project.optional-dependencies]
 dev = [
