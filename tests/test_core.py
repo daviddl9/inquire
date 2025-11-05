@@ -45,20 +45,23 @@ async def test_research_basic_flow(valid_config, tmp_path):
         researcher.baml_manager, "init", new_callable=AsyncMock
     ):
         with patch.object(researcher.baml_manager, "verify_function"):
-            # Mock BAML function
-            class MockResult:
-                pass
+            with patch.object(
+                researcher, "_run_research", new_callable=AsyncMock, return_value="[Mock research output]"
+            ):
+                # Mock BAML function
+                class MockResult:
+                    pass
 
-            async def mock_baml_func(research_output: str):
-                return MockResult()
+                async def mock_baml_func(research_output: str):
+                    return MockResult()
 
-            result = await researcher.research(
-                research_instructions="Test research",
-                schema=MockResult,
-                baml_function=mock_baml_func,
-            )
+                result = await researcher.research(
+                    research_instructions="Test research",
+                    schema=MockResult,
+                    baml_function=mock_baml_func,
+                )
 
-            assert isinstance(result, MockResult)
+                assert isinstance(result, MockResult)
 
 
 @pytest.mark.asyncio
@@ -72,18 +75,21 @@ async def test_research_extraction_error(valid_config, tmp_path):
         researcher.baml_manager, "init", new_callable=AsyncMock
     ):
         with patch.object(researcher.baml_manager, "verify_function"):
-            # Mock BAML function that raises
-            async def mock_baml_func(research_output: str):
-                raise ValueError("Extraction failed")
+            with patch.object(
+                researcher, "_run_research", new_callable=AsyncMock, return_value="[Mock research output]"
+            ):
+                # Mock BAML function that raises
+                async def mock_baml_func(research_output: str):
+                    raise ValueError("Extraction failed")
 
-            with pytest.raises(ExtractionError) as exc_info:
-                await researcher.research(
-                    research_instructions="Test",
-                    schema=object,
-                    baml_function=mock_baml_func,
-                )
+                with pytest.raises(ExtractionError) as exc_info:
+                    await researcher.research(
+                        research_instructions="Test",
+                        schema=object,
+                        baml_function=mock_baml_func,
+                    )
 
-            assert "BAML extraction failed" in str(exc_info.value)
+                assert "BAML extraction failed" in str(exc_info.value)
 
 
 @pytest.mark.asyncio
@@ -97,24 +103,26 @@ async def test_research_type_mismatch(valid_config, tmp_path):
         researcher.baml_manager, "init", new_callable=AsyncMock
     ):
         with patch.object(researcher.baml_manager, "verify_function"):
+            with patch.object(
+                researcher, "_run_research", new_callable=AsyncMock, return_value="[Mock research output]"
+            ):
+                class ExpectedType:
+                    pass
 
-            class ExpectedType:
-                pass
+                class WrongType:
+                    pass
 
-            class WrongType:
-                pass
+                async def mock_baml_func(research_output: str):
+                    return WrongType()
 
-            async def mock_baml_func(research_output: str):
-                return WrongType()
+                with pytest.raises(ExtractionError) as exc_info:
+                    await researcher.research(
+                        research_instructions="Test",
+                        schema=ExpectedType,
+                        baml_function=mock_baml_func,
+                    )
 
-            with pytest.raises(ExtractionError) as exc_info:
-                await researcher.research(
-                    research_instructions="Test",
-                    schema=ExpectedType,
-                    baml_function=mock_baml_func,
-                )
-
-            assert "expected" in str(exc_info.value).lower()
+                assert "expected" in str(exc_info.value).lower()
 
 
 @pytest.mark.asyncio

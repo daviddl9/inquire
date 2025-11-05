@@ -7,6 +7,9 @@ requires-python = ">=3.11"
 dependencies = [
     "baml-py==0.205.0",
     "pydantic>=2.0",
+    "tavily-python>=0.5.0",
+    "openai>=1.0.0",
+    "httpx>=0.24.0",
 ]
 
 [project.optional-dependencies]

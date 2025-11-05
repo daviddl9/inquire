@@ -37,18 +37,20 @@ async def test_end_to_end_research_flow(tmp_path):
         mock_manager.init = AsyncMock()
         mock_manager.verify_function = lambda x: None
 
-        # Execute research
-        result = await research(
-            research_instructions="Research Test Company",
-            schema=MockCompanyInfo,
-            baml_function=mock_baml_function,
-            config=config,
-        )
+        # Mock the _run_research method on Researcher class
+        with patch("inquire.core.Researcher._run_research", new_callable=AsyncMock, return_value="[Mock research output]"):
+            # Execute research
+            result = await research(
+                research_instructions="Research Test Company",
+                schema=MockCompanyInfo,
+                baml_function=mock_baml_function,
+                config=config,
+            )
 
-        # Verify
-        assert result.name == "Test Company"
-        assert len(result.founders) == 2
-        assert result.funding == "$10M"
+            # Verify
+            assert result.name == "Test Company"
+            assert len(result.founders) == 2
+            assert result.funding == "$10M"
 
 
 @pytest.mark.asyncio
@@ -73,19 +75,20 @@ async def test_researcher_multiple_calls(tmp_path):
 
     with patch.object(researcher.baml_manager, "init", new_callable=AsyncMock):
         with patch.object(researcher.baml_manager, "verify_function"):
-            # First call
-            result1 = await researcher.research(
-                research_instructions="Test 1",
-                schema=MockResult,
-                baml_function=mock_func,
-            )
+            with patch.object(researcher, "_run_research", new_callable=AsyncMock, return_value="[Mock research output]"):
+                # First call
+                result1 = await researcher.research(
+                    research_instructions="Test 1",
+                    schema=MockResult,
+                    baml_function=mock_func,
+                )
 
-            # Second call
-            result2 = await researcher.research(
-                research_instructions="Test 2",
-                schema=MockResult,
-                baml_function=mock_func,
-            )
+                # Second call
+                result2 = await researcher.research(
+                    research_instructions="Test 2",
+                    schema=MockResult,
+                    baml_function=mock_func,
+                )
 
-            assert isinstance(result1, MockResult)
-            assert isinstance(result2, MockResult)
+                assert isinstance(result1, MockResult)
+                assert isinstance(result2, MockResult)
