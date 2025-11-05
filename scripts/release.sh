@@ -44,6 +44,11 @@ CURRENT_VERSION=$(grep '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/
 info "Current version: $CURRENT_VERSION"
 info "New version: $NEW_VERSION"
 
+# Check if version is the same
+if [ "$CURRENT_VERSION" = "$NEW_VERSION" ]; then
+    error "Version $NEW_VERSION is already the current version. No change needed."
+fi
+
 # Check if on master branch
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 if [ "$CURRENT_BRANCH" != "master" ]; then
