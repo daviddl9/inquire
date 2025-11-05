@@ -9,10 +9,10 @@ Combine BAML's structured extraction with deep research capabilities to get type
 ### 1. Install Dependencies
 
 ```bash
-# Install the package
+# Install inquire-py
 pip install inquire-py
 
-# Install BAML CLI for schema management
+# Install BAML CLI (required for code generation)
 npm install -g @boundaryml/baml
 ```
 
@@ -20,7 +20,7 @@ npm install -g @boundaryml/baml
 
 ### 2. Set Up API Keys
 
-Create a `.env` file or export environment variables:
+Export environment variables:
 
 ```bash
 export OPENAI_API_KEY="sk-..."
@@ -31,30 +31,9 @@ Get API keys:
 - OpenAI: https://platform.openai.com/api-keys
 - Tavily: https://tavily.com/ (for web search)
 
-### 3. Initialize BAML Project
+### 3. Create Your Schema
 
-Create your project directory and initialize BAML:
-
-```bash
-mkdir my_research_project
-cd my_research_project
-
-# Initialize BAML with Python/Pydantic support
-baml-cli init --client-type python/pydantic
-```
-
-This creates:
-```
-baml_schemas/
-├── baml_src/
-│   ├── clients.baml      # LLM client configurations
-│   └── generators.baml   # Code generation settings
-└── baml_client/          # Generated Python client (auto-created)
-```
-
-### 4. Define Your Schema
-
-Create `baml_schemas/baml_src/research.baml` with your data structure:
+Create `baml_schemas/baml_src/company.baml`:
 
 ```baml
 class CompanyInfo {
@@ -77,18 +56,7 @@ function ExtractCompanyInfo(research_output: string) -> CompanyInfo {
 }
 ```
 
-**Important**: Make sure to use client names defined in `baml_schemas/baml_src/clients.baml` (like `CustomGPT4o`, `CustomGPT4oMini`, etc.)
-
-### 5. Generate Python Types
-
-```bash
-# Generate Python client from BAML schemas
-baml-cli generate
-```
-
-This creates type-safe Python classes in `baml_client/` that you can import.
-
-### 6. Use in Your Python Code
+### 4. Write Your Python Code
 
 Create `research_companies.py`:
 
@@ -99,7 +67,7 @@ from baml_client.types import CompanyInfo
 from baml_client import b
 
 async def main():
-    # Run research with structured extraction
+    # inquire automatically initializes BAML and generates types
     result = await research(
         research_instructions="Research Stripe: founders, funding, and what they do",
         schema=CompanyInfo,
@@ -116,10 +84,27 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-Run it:
+### 5. Run It
 
 ```bash
 python research_companies.py
+```
+
+**What happens behind the scenes:**
+1. First run: `inquire` detects no BAML project and runs `baml init` automatically
+2. Then runs `baml-cli generate` to create Python types from your schemas
+3. Executes your research and extraction
+
+After the first run, the BAML project structure exists and subsequent runs just regenerate types if needed.
+
+**Project structure created:**
+```
+baml_schemas/
+├── baml_src/
+│   ├── clients.baml       # Auto-generated LLM configs
+│   ├── generators.baml    # Auto-generated settings
+│   └── company.baml       # Your schema (you created this)
+└── baml_client/           # Generated Python types (don't edit)
 ```
 
 ## How It Works
@@ -127,20 +112,7 @@ python research_companies.py
 1. **Research Phase**: `inquire` uses Tavily to search the web and OpenAI to synthesize findings
 2. **Extraction Phase**: Your BAML function extracts structured data from the research
 3. **Type Safety**: Returns a Pydantic model with full validation and IDE support
-
-## Automatic BAML Initialization
-
-If you skip the manual BAML setup, `inquire` will automatically initialize BAML on first run:
-
-```python
-from inquire import Researcher
-
-# This will auto-initialize baml_schemas/ if it doesn't exist
-researcher = Researcher()
-await researcher.research(...)
-```
-
-After auto-initialization, add your schemas to `baml_schemas/baml_src/` and run `baml-cli generate`.
+4. **Auto-Management**: BAML initialization and code generation happen automatically via `BamlManager`
 
 ## Features
 
